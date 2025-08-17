@@ -20,8 +20,8 @@ public class Teacher {
     private String password;
     private int age;
 
-    @OneToOne
-    private User user;
     @ManyToOne
     private Subject subject;
+    @OneToOne
+    private User user;
 }

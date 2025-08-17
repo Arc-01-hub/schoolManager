@@ -16,6 +16,7 @@ public class Student {
     private Long Id;
     private String fName;
     private String lName;
+    private String password;
     private int age;
 
     @ManyToOne

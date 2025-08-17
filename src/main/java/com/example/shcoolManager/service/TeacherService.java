@@ -8,8 +8,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.example.shcoolManager.dto.TeacherDto;
+import com.example.shcoolManager.model.Subject;
 import com.example.shcoolManager.model.Teacher;
 import com.example.shcoolManager.model.User;
+import com.example.shcoolManager.repo.SubjectRepo;
 import com.example.shcoolManager.repo.TeacherRepo;
 import com.example.shcoolManager.repo.UserRepo;
 
@@ -20,10 +22,24 @@ public class TeacherService {
     @Autowired
     public UserRepo userRepo;
     @Autowired
+    public SubjectRepo subjectRepo;
+    @Autowired
     public AuthService authService;
     @Autowired
     public PasswordEncoder passwordEncoder;
 
+    // Dto to teacher
+    public Teacher converyDtoToTeacher(TeacherDto teacherdto){
+        Teacher teacher = new Teacher();
+        teacher.setId(teacherdto.getId());
+        teacher.setFName(teacherdto.getFName());
+        teacher.setLName(teacherdto.getLName());
+        teacher.setPassword(null);
+        teacher.setAge(teacherdto.getAge()); 
+        teacher.setSubject(subjectRepo.findById(teacherdto.getSubjectId()).get());
+        return teacher;
+    }
+    // TEACHER TO DTO
     public TeacherDto converyTeacherToDto(Teacher teacher){
         TeacherDto teacherDto = new TeacherDto();
         teacherDto.setId(teacher.getId());
@@ -31,7 +47,7 @@ public class TeacherService {
         teacherDto.setLName(teacher.getLName());
         teacherDto.setPassword(teacher.getPassword());
         teacherDto.setAge(teacher.getAge()); 
-        teacherDto.setSubject(teacher.getSubject ());
+        teacherDto.setSubjectId(teacher.getSubject ().getId());
         return teacherDto;
     }
     //GET All TEACHERS
@@ -44,14 +60,16 @@ public class TeacherService {
         return converyTeacherToDto(teacherRepo.findById(id).get());
     }
     //Create  TEACHER
-    public void createTeacher(Teacher teacher){
+    public void createTeacher(TeacherDto teacherDto){
         User newUser = new User();
-        newUser.setUserName(teacher.getFName());
-        newUser.setPassword(teacher.getPassword());
+        newUser.setUserName(teacherDto.getFName());
+        newUser.setPassword(teacherDto.getPassword());
         newUser.setType("teacher");
+
         User savedUser = authService.Register(newUser);
+
+        Teacher teacher =converyDtoToTeacher(teacherDto);
         teacher.setUser(savedUser);
-        teacher.setPassword(null);
 
         teacherRepo.save(teacher);
     }

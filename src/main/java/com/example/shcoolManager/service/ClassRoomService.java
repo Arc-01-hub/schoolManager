@@ -16,7 +16,7 @@ public class ClassRoomService {
     @Autowired
     private ClassRoomRepo classRoomRepo;
 
-    // تحويل ClassRoom → ClassRoomDto
+    // classRoomDto
     public ClassRoomDto convertClassRoomToDto(ClassRoom classRoom){
         ClassRoomDto classRoomDto = new ClassRoomDto();
         classRoomDto.setId(classRoom.getId());

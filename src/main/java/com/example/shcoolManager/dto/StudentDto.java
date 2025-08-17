@@ -3,12 +3,12 @@ package com.example.shcoolManager.dto;
 import lombok.Data;
 
 @Data
-public class TeacherDto {
+public class StudentDto {
     private Long id;
     private String fName;
     private String lName;
     private String password;
     private int age;
-    // private String subjectName;
-    private Long subjectId;
+    private Long classRoomId;
+    // private String classRoomName;
 }
